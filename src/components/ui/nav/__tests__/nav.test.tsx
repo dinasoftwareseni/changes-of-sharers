@@ -21,24 +21,8 @@ describe('Nav', () => {
 describe('getDefaultNavIndex', () => {
   const routes = [
     {
-      route: Routes.HOME,
+      route: Routes.APPLICANT,
       index: 1,
-    },
-    {
-      route: Routes.DATA,
-      index: 2,
-    },
-    {
-      route: Routes.TABLE,
-      index: 3,
-    },
-    {
-      route: Routes.LIST,
-      index: 3,
-    },
-    {
-      route: Routes.FORM,
-      index: 3,
     },
     {
       route: '/random-route',
