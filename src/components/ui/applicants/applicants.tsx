@@ -1,8 +1,12 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
+import { useHistory } from 'react-router'
+import { Routes } from '../../../constants/routes'
 import { FlexContainer, Title, Table, elWFull, Button, Icon, elMt7, ButtonGroup } from '@reapit/elements'
+import { actionButton } from './__style__/style'
+import { navigate } from '../../../utils/navigation'
 
 export const ApplicantPage: FC = () => {
-  const [indexExpandedRow, setIndexExpandedRow] = useState<number | null>(null)
+  const [indexExpandedRow, setIndexExpandedRow] = React.useState<number | null>(null)
   const applicantDummy = {
     applicants: [
       {
@@ -25,6 +29,8 @@ export const ApplicantPage: FC = () => {
       },
     ],
   }
+
+  const history = useHistory()
 
   return (
     <FlexContainer isFlexAuto isFlexColumn>
@@ -53,8 +59,8 @@ export const ApplicantPage: FC = () => {
                 {
                   label: 'Action',
                   value: (
-                    <Button intent="low" data-testid={'test.button.action'}>
-                      <Icon intent="primary" icon="editSolidSystem" data-testid={'test.icon.action'} />
+                    <Button intent="neutral" className={actionButton}>
+                      <Icon icon="cancelSolidSystem" intent="primary" iconSize="small" />
                     </Button>
                   ),
                   narrowTable: {
@@ -74,7 +80,7 @@ export const ApplicantPage: FC = () => {
         </Button>
       </FlexContainer>
       <ButtonGroup alignment="right">
-        <Button chevronRight intent="primary">
+        <Button chevronRight intent="primary" onClick={navigate(history, Routes.CHECK_KEYS)}>
           Next
         </Button>
       </ButtonGroup>

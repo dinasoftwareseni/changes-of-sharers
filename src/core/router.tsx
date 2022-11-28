@@ -31,6 +31,7 @@ export const catchChunkError = (
 const LoginPage = React.lazy(() => catchChunkError(() => import('../components/pages/login-page')))
 const HomePage = React.lazy(() => catchChunkError(() => import('../components/pages/home-page')))
 const ApplicantPage = React.lazy(() => catchChunkError(() => import('../components/ui/applicants/applicants')))
+const CheckKeysPage = React.lazy(() => catchChunkError(() => import('../components/ui/check-keys/check-keys')))
 
 const Router = () => (
   <BrowserRouter history={history}>
@@ -41,6 +42,7 @@ const Router = () => (
           <Switch>
             <Route path={Routes.HOME} exact component={HomePage} />
             <Route path={Routes.APPLICANT} exact component={ApplicantPage} />
+            <Route path={Routes.CHECK_KEYS} exact component={CheckKeysPage} />
           </Switch>
         </PrivateRouteWrapper>
         <Redirect to={Routes.LOGIN} />
