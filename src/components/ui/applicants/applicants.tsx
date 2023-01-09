@@ -14,14 +14,27 @@ import {
   ButtonGroup,
   Input,
   FormLayout,
+  useModal,
 } from '@reapit/elements'
 import { actionButton, formLayoutModal, modalSearch } from './__style__/style'
 import { navigate } from '../../../utils/navigation'
+import { AddApplicantModal } from '../add-applicant-modal/add-applicant-modal'
 
 export const ApplicantPage: FC = () => {
   const [indexExpandedRow, setIndexExpandedRow] = React.useState<number | null>(null)
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
+
+  const {
+    Modal: AddApplicantModalView,
+    modalIsOpen: addApplicantModalIsOpen,
+    openModal: openAddApplicantModal,
+    closeModal: closeAddApplicantModal,
+  } = useModal('root')
+
+  function doOpenAddApplicantModal() {
+    openAddApplicantModal()
+  }
 
   const applicantDummy = {
     applicants: [
@@ -93,15 +106,28 @@ export const ApplicantPage: FC = () => {
         </FlexContainer>
         <FlexContainer className={elMt7}>
           <Button type="submit" intent="primary" onClick={() => setModalIsOpen(!modalIsOpen)}>
-            Add
+            Add Applicant
           </Button>
         </FlexContainer>
         <ButtonGroup alignment="right">
-          <Button chevronRight intent="primary" onClick={navigate(history, Routes.CHECK_KEYS)}>
+          <Button
+            chevronRight
+            intent="primary"
+            onClick={doOpenAddApplicantModal}
+            // onClick={navigate(history, Routes.CHECK_KEYS)}
+          >
             Next
           </Button>
         </ButtonGroup>
       </FlexContainer>
+
+      {addApplicantModalIsOpen && (
+        <AddApplicantModal
+          Modal={AddApplicantModalView}
+          isOpen={addApplicantModalIsOpen}
+          onModalClose={closeAddApplicantModal}
+        />
+      )}
 
       <Modal
         className={modalSearch}
