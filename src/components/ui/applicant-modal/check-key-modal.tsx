@@ -8,21 +8,19 @@ import {
   FormLayout,
   InputWrap,
   Select,
-  useMediaQuery,
-  elMl3,
-  InputGroup,
   Label,
   Input,
 } from '@reapit/elements'
 import { formLayoutStyle } from '../check-keys/__style__/style'
+import { CHECK_KEY_TERM } from '../../../constants/applicant-data'
 
-export type AddApplicantModalProps = {
+export type CheckKeyModalProps = {
   Modal: React.FC<Partial<ModalProps>>
   isOpen: boolean
   onModalClose: () => void
 }
 
-export const AddApplicantModal: FC<AddApplicantModalProps> = ({ Modal, isOpen, onModalClose }) => {
+export const CheckKeyModal: FC<CheckKeyModalProps> = ({ Modal, isOpen, onModalClose }) => {
   return (
     <Modal>
       <FlexContainer isFlexAuto isFlexColumn>
@@ -37,9 +35,16 @@ export const AddApplicantModal: FC<AddApplicantModalProps> = ({ Modal, isOpen, o
           <InputWrap>
             <Label>Term</Label>
             <Select>
-              <option value="1">Option 1</option>
-              <option value="2">Option 2</option>
-              <option value="3">Option 3</option>
+              <option key="select-term" value="">
+                Select Term
+              </option>
+              {CHECK_KEY_TERM.map((term) => {
+                return (
+                  <option key={term.value} value={term.id} data-testid={'test.option.term'}>
+                    {term.value}
+                  </option>
+                )
+              })}
             </Select>
           </InputWrap>
           <InputWrap>

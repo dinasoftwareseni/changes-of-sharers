@@ -8,6 +8,6 @@ export const formLayoutModal = css`
   grid-template-columns: repeat(2, 1fr);
 `
 
-export const modalSearch = css`
+export const modalApplicant = css`
   top: 50%;
 `

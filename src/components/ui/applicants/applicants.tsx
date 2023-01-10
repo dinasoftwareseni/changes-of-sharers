@@ -1,29 +1,20 @@
-import React, { FC, useState } from 'react'
-import { useHistory } from 'react-router'
-import { Routes } from '../../../constants/routes'
-import {
-  Modal,
-  FlexContainer,
-  Title,
-  Table,
-  elWFull,
-  Button,
-  Icon,
-  elMt7,
-  elMb7,
-  ButtonGroup,
-  Input,
-  FormLayout,
-  useModal,
-} from '@reapit/elements'
-import { actionButton, formLayoutModal, modalSearch } from './__style__/style'
-import { navigate } from '../../../utils/navigation'
-import { AddApplicantModal } from '../add-applicant-modal/add-applicant-modal'
+import React, { FC } from 'react'
+
+import { FlexContainer, Title, Table, elWFull, Button, Icon, elMt7, ButtonGroup, useModal } from '@reapit/elements'
+import { actionButton } from './__style__/style'
+import { CheckKeyModal } from '../applicant-modal/check-key-modal'
+import { APPLICANTS_DATA } from '../../../constants/applicant-data'
+import { AddApplicantModal } from '../applicant-modal/add-applicant-modal'
 
 export const ApplicantPage: FC = () => {
   const [indexExpandedRow, setIndexExpandedRow] = React.useState<number | null>(null)
 
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const {
+    Modal: CheckKeyModalView,
+    modalIsOpen: checkKeyModalIsOpen,
+    openModal: openCheckKeyModal,
+    closeModal: closeCheckKeyModal,
+  } = useModal('root')
 
   const {
     Modal: AddApplicantModalView,
@@ -32,34 +23,13 @@ export const ApplicantPage: FC = () => {
     closeModal: closeAddApplicantModal,
   } = useModal('root')
 
+  function doOpenCheckKeyModal() {
+    openCheckKeyModal()
+  }
+
   function doOpenAddApplicantModal() {
     openAddApplicantModal()
   }
-
-  const applicantDummy = {
-    applicants: [
-      {
-        name: 'Derek',
-        address: 'Ketapang Street',
-        code: 123,
-        phone: '081226213344',
-      },
-      {
-        name: 'Rodney',
-        address: 'Melati Street',
-        code: 123,
-        phone: '081226213344',
-      },
-      {
-        name: 'Brad',
-        address: 'Pinus Street',
-        code: 123,
-        phone: '081226213344',
-      },
-    ],
-  }
-
-  const history = useHistory()
 
   return (
     <>
@@ -74,7 +44,7 @@ export const ApplicantPage: FC = () => {
             indexExpandedRow={indexExpandedRow}
             setIndexExpandedRow={setIndexExpandedRow}
             data-testid={'test.table.tenancyCheckSetupTable'}
-            rows={applicantDummy.applicants.map((item) => {
+            rows={APPLICANTS_DATA.applicants.map((item) => {
               return {
                 cells: [
                   {
@@ -105,21 +75,20 @@ export const ApplicantPage: FC = () => {
           />
         </FlexContainer>
         <FlexContainer className={elMt7}>
-          <Button type="submit" intent="primary" onClick={() => setModalIsOpen(!modalIsOpen)}>
+          <Button type="submit" intent="primary" onClick={doOpenAddApplicantModal}>
             Add Applicant
           </Button>
         </FlexContainer>
         <ButtonGroup alignment="right">
-          <Button
-            chevronRight
-            intent="primary"
-            onClick={doOpenAddApplicantModal}
-            // onClick={navigate(history, Routes.CHECK_KEYS)}
-          >
+          <Button chevronRight intent="primary" onClick={doOpenCheckKeyModal}>
             Next
           </Button>
         </ButtonGroup>
       </FlexContainer>
+
+      {checkKeyModalIsOpen && (
+        <CheckKeyModal Modal={CheckKeyModalView} isOpen={checkKeyModalIsOpen} onModalClose={closeCheckKeyModal} />
+      )}
 
       {addApplicantModalIsOpen && (
         <AddApplicantModal
@@ -128,65 +97,6 @@ export const ApplicantPage: FC = () => {
           onModalClose={closeAddApplicantModal}
         />
       )}
-
-      <Modal
-        className={modalSearch}
-        isOpen={modalIsOpen}
-        onModalClose={() => setModalIsOpen(!modalIsOpen)}
-        title="Add Applicants"
-      >
-        <FlexContainer isFlexColumn>
-          <FormLayout hasMargin className={formLayoutModal}>
-            <Input type="search" placeholder="search by name" />
-            <Input type="search" placeholder="search by address" />
-            <Input type="search" placeholder="search by code" />
-            <Input type="search" placeholder="search by telephone" />
-            <Input type="search" placeholder="search by email" />
-          </FormLayout>
-        </FlexContainer>
-        <FlexContainer className={elMb7}>
-          <Button type="submit" intent="primary" onClick={() => setModalIsOpen(!modalIsOpen)}>
-            Search
-          </Button>
-        </FlexContainer>
-        <FlexContainer isFlexWrap>
-          <Table
-            className={elWFull}
-            numberColumns={2}
-            indexExpandedRow={indexExpandedRow}
-            setIndexExpandedRow={setIndexExpandedRow}
-            data-testid={'test.table.tenancyCheckSetupTable'}
-            rows={applicantDummy.applicants.map((item) => {
-              return {
-                cells: [
-                  {
-                    label: 'Name',
-                    value: item.name,
-                    narrowTable: {
-                      showLabel: true,
-                      isFullWidth: true,
-                    },
-                    cellHasDarkText: true,
-                  },
-                  {
-                    label: 'Action',
-                    value: (
-                      <Button intent="neutral">
-                        <Icon icon="tickSolidSystem" intent="primary" iconSize="small" />
-                      </Button>
-                    ),
-                    narrowTable: {
-                      showLabel: true,
-                      isFullWidth: true,
-                      order: 1,
-                    },
-                  },
-                ],
-              }
-            })}
-          />
-        </FlexContainer>
-      </Modal>
     </>
   )
 }
